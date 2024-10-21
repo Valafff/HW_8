@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collect Coins Game</title>
+    <style>
+        #gameCanvas {
+            border: 1px solid black;
+            background-color: #f0f0f0;
+            position: relative;
+        }
+        .coin {
+            width: 20px;
+            height: 20px;
+            background-color: gold;
+            border-radius: 50%;
+            position: absolute;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="500" height="500"></canvas>
+    <p>Вскго нажатий: <span id="totalClicks">0</span></p>
+    <p>Монет собрано: <span id="coinsCollected">0</span></p>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const totalClicksElement = document.getElementById('totalClicks');
+        const coinsCollectedElement = document.getElementById('coinsCollected');
+
+        let totalClicks = 0;
+        let coinsCollected = 0;
+
+        const coins = [];
+
+        for (let i = 0; i < 10; i++) {
+            const coin = {
+                x: Math.random() * (canvas.width - 20),
+                y: Math.random() * (canvas.height - 20),
+                collected: false
+            };
+            coins.push(coin);
+        }
+
+        function drawCoins() {
+            coins.forEach(coin => {
+                if (!coin.collected) {
+                    ctx.beginPath();
+                    ctx.arc(coin.x + 10, coin.y + 10, 10, 0, Math.PI * 2);
+                    ctx.fillStyle = 'gold';
+                    ctx.fill();
+                    ctx.closePath();
+                }
+            });
+        }
+
+        canvas.addEventListener('click', (event) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            totalClicks++;
+            totalClicksElement.textContent = totalClicks;
+
+            coins.forEach(coin => {
+                if (!coin.collected && x > coin.x && x < coin.x + 20 && y > coin.y && y < coin.y + 20) {
+                    coin.collected = true;
+                    coinsCollected++;
+                    coinsCollectedElement.textContent = coinsCollected;
+                }
+            });
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawCoins();
+        });
+
+        drawCoins();
+    </script>
+</body>
+</html>

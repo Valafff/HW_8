@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Светофор</title>
+    <style>
+        .traffic-light {
+            width: 100px;
+            height: 300px;
+            background-color: black;
+            border-radius: 20px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .light {
+            width: 80px;
+            height: 80px;
+            background-color: grey;
+            border-radius: 50%;
+        }
+        .red {
+            background-color: red;
+        }
+        .yellow {
+            background-color: yellow;
+        }
+        .green {
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="traffic-light">
+        <div id="red" class="light"></div>
+        <div id="yellow" class="light"></div>
+        <div id="green" class="light"></div>
+    </div>
+
+    <script>
+        let currentLight = 0;
+        const lights = document.querySelectorAll('.light');
+
+        function changeLight() {
+            lights.forEach(light => light.classList.remove('red', 'yellow', 'green'));
+            if (currentLight === 0) {
+                lights[0].classList.add('red');
+            } else if (currentLight === 1) {
+                lights[1].classList.add('yellow');
+            } else {
+                lights[2].classList.add('green');
+            }
+            currentLight = (currentLight + 1) % 3;
+        }
+
+        setInterval(changeLight, 2000);
+    </script>
+</body>
+</html>
